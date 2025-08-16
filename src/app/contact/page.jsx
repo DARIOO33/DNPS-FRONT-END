@@ -55,7 +55,7 @@ export default function Contact() {
                   />
                 </div>
                 <div>
-                  <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-1">Sujet</label>
+                  <label htmlFor="subject" className="block text-sm font-medium text-black mb-1">Sujet</label>
                   <select
                     id="subject"
                     className="w-full px-2 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-600 focus:border-transparent"
