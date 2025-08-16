@@ -24,7 +24,7 @@ export default function Contact() {
           <div className="grid md:grid-cols-2 gap-12">
             {/* Contact Form */}
             <div className="bg-white rounded-xl shadow-lg p-8 order-2 md:order-1">
-              <h2 className="text-2xl font-bold mb-6">Envoyez-nous un message</h2>
+              <h2 className="text-2xl font-bold mb-6 text-black">Envoyez-nous un message</h2>
               <form className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
@@ -87,7 +87,7 @@ export default function Contact() {
 
             {/* Contact Info */}
             <div className='order-1 md:order-2'>
-              <h2 className="text-2xl font-bold mb-6">Nos coordonnées</h2>
+              <h2 className="text-2xl font-bold mb-6 text-black">Nos coordonnées</h2>
               <div className="space-y-6">
                 <div className="flex items-start">
 
@@ -98,7 +98,7 @@ export default function Contact() {
                     <PhoneIcon className="h-6 w-6 text-green-700" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold mb-1">Téléphone</h3>
+                    <h3 className="text-lg font-semibold mb-1 text-black">Téléphone</h3>
                     <p className="text-gray-600">07 49 40 90 58</p>
                   </div>
                 </div>
@@ -107,7 +107,7 @@ export default function Contact() {
                     <EnvelopeIcon className="h-6 w-6 text-green-700" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold mb-1">Email</h3>
+                    <h3 className="text-lg font-semibold mb-1 text-black">Email</h3>
                     <p className="text-gray-600">debarrasnettoyage75@gmail.com</p>
                   </div>
                 </div>
@@ -116,7 +116,7 @@ export default function Contact() {
                     <ClockIcon className="h-6 w-6 text-green-700" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold mb-1">Horaires</h3>
+                    <h3 className="text-lg font-semibold mb-1 text-black">Horaires</h3>
                     <p className="text-gray-600">Lundi-Vendredi : 8h-20h</p>
                     <p className="text-gray-600">Samedi : 9h-19h</p>
                     <p className="text-gray-600">Urgences 7j/7</p>
