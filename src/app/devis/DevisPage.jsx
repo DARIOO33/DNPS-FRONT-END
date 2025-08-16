@@ -1,14 +1,24 @@
 "use client"
 import { useState } from 'react';
 
-
-
 export default function Devis() {
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedServices, setSelectedServices] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
-  
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    address: '',
+    type: '',
+    surface: '',
+    description: '',
+    urgency: '',
+    photos: null,
+    consent: false
+  });
+  const [errors, setErrors] = useState({});
 
   const toggleService = (service) => {
     setSelectedServices(prev =>
@@ -18,8 +28,73 @@ export default function Devis() {
     );
   };
 
+  const handleChange = (e) => {
+    const { name, value, type, files, checked } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: type === 'file' ? files : type === 'checkbox' ? checked : value
+    }));
+    
+    // Clear error when user types
+    if (errors[name]) {
+      setErrors(prev => {
+        const newErrors = { ...prev };
+        delete newErrors[name];
+        return newErrors;
+      });
+    }
+  };
+
+  const validateStep1 = () => {
+    const newErrors = {};
+    if (!formData.name.trim()) newErrors.name = 'Le nom est requis';
+    if (!formData.email.trim()) {
+      newErrors.email = 'L\'email est requis';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = 'Email invalide';
+    }
+    if (!formData.phone.trim()) {
+      newErrors.phone = 'Le téléphone est requis';
+    } else if (!/^[0-9 +-]+$/.test(formData.phone)) {
+      newErrors.phone = 'Numéro invalide';
+    }
+    if (!formData.address.trim()) newErrors.address = 'L\'adresse est requise';
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const validateStep2 = () => {
+    const newErrors = {};
+    if (!formData.type) newErrors.type = 'Veuillez sélectionner un type de bien';
+    if (!formData.surface) {
+      newErrors.surface = 'La surface est requise';
+    } else if (isNaN(formData.surface)) {
+      newErrors.surface = 'La surface doit être un nombre';
+    } else if (formData.surface <= 0) {
+      newErrors.surface = 'La surface doit être positive';
+    }
+    if (!formData.description.trim()) newErrors.description = 'La description est requise';
+    if (selectedServices.length === 0) newErrors.services = 'Veuillez sélectionner au moins un service';
+    if (!formData.urgency) newErrors.urgency = 'Veuillez sélectionner un niveau d\'urgence';
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const validateStep3 = () => {
+    const newErrors = {};
+    if (!formData.consent) newErrors.consent = 'Vous devez accepter les conditions';
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    
+    // Validate final step before submission
+    if (!validateStep3()) return;
+    
     setIsSubmitting(true);
     
     // Simulate API call
@@ -29,7 +104,12 @@ export default function Devis() {
     }, 2000);
   };
 
-  const nextStep = () => setCurrentStep(prev => prev + 1);
+  const nextStep = () => {
+    if (currentStep === 1 && !validateStep1()) return;
+    if (currentStep === 2 && !validateStep2()) return;
+    setCurrentStep(prev => prev + 1);
+  };
+
   const prevStep = () => setCurrentStep(prev => prev - 1);
 
   return (
@@ -88,6 +168,19 @@ export default function Devis() {
                   onClick={() => {
                     setSubmitSuccess(false);
                     setCurrentStep(1);
+                    setFormData({
+                      name: '',
+                      email: '',
+                      phone: '',
+                      address: '',
+                      type: '',
+                      surface: '',
+                      description: '',
+                      urgency: '',
+                      photos: null,
+                      consent: false
+                    });
+                    setSelectedServices([]);
                   }}
                   className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none"
                 >
@@ -107,36 +200,48 @@ export default function Devis() {
                           <input 
                             type="text" 
                             id="name" 
-                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-600 focus:border-transparent transition-all"
-                            required
+                            name="name"
+                            value={formData.name}
+                            onChange={handleChange}
+                            className={`w-full px-4 py-3 border ${errors.name ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:ring-2 focus:ring-green-600 focus:border-transparent transition-all`}
                           />
+                          {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name}</p>}
                         </div>
                         <div>
                           <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email*</label>
                           <input 
                             type="email" 
                             id="email" 
-                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-600 focus:border-transparent transition-all"
-                            required
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            className={`w-full px-4 py-3 border ${errors.email ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:ring-2 focus:ring-green-600 focus:border-transparent transition-all`}
                           />
+                          {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email}</p>}
                         </div>
                         <div>
                           <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">Téléphone*</label>
                           <input 
                             type="tel" 
                             id="phone" 
-                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-600 focus:border-transparent transition-all"
-                            required
+                            name="phone"
+                            value={formData.phone}
+                            onChange={handleChange}
+                            className={`w-full px-4 py-3 border ${errors.phone ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:ring-2 focus:ring-green-600 focus:border-transparent transition-all`}
                           />
+                          {errors.phone && <p className="mt-1 text-sm text-red-600">{errors.phone}</p>}
                         </div>
                         <div>
                           <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-1">Adresse*</label>
                           <input 
                             type="text" 
                             id="address" 
-                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-600 focus:border-transparent transition-all"
-                            required
+                            name="address"
+                            value={formData.address}
+                            onChange={handleChange}
+                            className={`w-full px-4 py-3 border ${errors.address ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:ring-2 focus:ring-green-600 focus:border-transparent transition-all`}
                           />
+                          {errors.address && <p className="mt-1 text-sm text-red-600">{errors.address}</p>}
                         </div>
                       </div>
                       <div className="flex justify-end pt-4">
@@ -165,8 +270,10 @@ export default function Devis() {
                           <label htmlFor="type" className="block text-sm font-medium text-gray-700 mb-1">Type de bien*</label>
                           <select 
                             id="type" 
-                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-600 focus:border-transparent transition-all"
-                            required
+                            name="type"
+                            value={formData.type}
+                            onChange={handleChange}
+                            className={`w-full px-4 py-3 border ${errors.type ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:ring-2 focus:ring-green-600 focus:border-transparent transition-all`}
                           >
                             <option value="">Sélectionnez...</option>
                             <option value="house">Maison</option>
@@ -177,15 +284,20 @@ export default function Devis() {
                             <option value="construction">Après chantier</option>
                             <option value="other">Autre</option>
                           </select>
+                          {errors.type && <p className="mt-1 text-sm text-red-600">{errors.type}</p>}
                         </div>
                         <div>
                           <label htmlFor="surface" className="block text-sm font-medium text-gray-700 mb-1">Surface (m²)*</label>
                           <input 
                             type="number" 
                             id="surface" 
-                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-600 focus:border-transparent transition-all"
-                            required
+                            name="surface"
+                            value={formData.surface}
+                            onChange={handleChange}
+                            min="1"
+                            className={`w-full px-4 py-3 border ${errors.surface ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:ring-2 focus:ring-green-600 focus:border-transparent transition-all`}
                           />
+                          {errors.surface && <p className="mt-1 text-sm text-red-600">{errors.surface}</p>}
                         </div>
                       </div>
                       
@@ -193,15 +305,19 @@ export default function Devis() {
                         <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">Description détaillée*</label>
                         <textarea 
                           id="description" 
+                          name="description"
+                          value={formData.description}
+                          onChange={handleChange}
                           rows={4} 
-                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-600 focus:border-transparent transition-all"
+                          className={`w-full px-4 py-3 border ${errors.description ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:ring-2 focus:ring-green-600 focus:border-transparent transition-all`}
                           placeholder="Décrivez ce qui doit être débarrassé, l'état des lieux, les objets volumineux..."
-                          required
                         ></textarea>
+                        {errors.description && <p className="mt-1 text-sm text-red-600">{errors.description}</p>}
                       </div>
                       
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-3">Services nécessaires*</label>
+                        {errors.services && <p className="mt-1 text-sm text-red-600 mb-2">{errors.services}</p>}
                         <div className="grid md:grid-cols-2 gap-4">
                           {[
                             "Débarras complet",
@@ -233,6 +349,7 @@ export default function Devis() {
                       
                       <div>
                         <label htmlFor="urgency" className="block text-sm font-medium text-gray-700 mb-1">Urgence*</label>
+                        {errors.urgency && <p className="mt-1 text-sm text-red-600 mb-2">{errors.urgency}</p>}
                         <div className="grid md:grid-cols-3 gap-4">
                           {[
                             { value: "normal", label: "Sous 1 semaine", desc: "Standard" },
@@ -245,8 +362,9 @@ export default function Devis() {
                                 id={`urgency-${option.value}`}
                                 name="urgency"
                                 value={option.value}
+                                checked={formData.urgency === option.value}
+                                onChange={handleChange}
                                 className="sr-only peer"
-                                required
                               />
                               <label 
                                 htmlFor={`urgency-${option.value}`}
@@ -300,20 +418,48 @@ export default function Devis() {
                         <h3 className="font-medium text-lg mb-4">Récapitulatif de votre demande</h3>
                         <div className="grid md:grid-cols-2 gap-4">
                           <div>
+                            <h4 className="text-sm font-medium text-gray-500">Nom</h4>
+                            <p>{formData.name}</p>
+                          </div>
+                          <div>
+                            <h4 className="text-sm font-medium text-gray-500">Email</h4>
+                            <p>{formData.email}</p>
+                          </div>
+                          <div>
+                            <h4 className="text-sm font-medium text-gray-500">Téléphone</h4>
+                            <p>{formData.phone}</p>
+                          </div>
+                          <div>
+                            <h4 className="text-sm font-medium text-gray-500">Adresse</h4>
+                            <p>{formData.address}</p>
+                          </div>
+                          <div>
                             <h4 className="text-sm font-medium text-gray-500">Type de bien</h4>
-                            <p>Maison</p>
+                            <p>
+                              {formData.type === 'house' ? 'Maison' :
+                               formData.type === 'apartment' ? 'Appartement' :
+                               formData.type === 'office' ? 'Bureau' :
+                               formData.type === 'cellar' ? 'Cave/Grenier' :
+                               formData.type === 'garden' ? 'Jardin' :
+                               formData.type === 'construction' ? 'Après chantier' :
+                               formData.type === 'other' ? 'Autre' : ''}
+                            </p>
                           </div>
                           <div>
                             <h4 className="text-sm font-medium text-gray-500">Surface</h4>
-                            <p>80 m²</p>
+                            <p>{formData.surface} m²</p>
                           </div>
                           <div>
                             <h4 className="text-sm font-medium text-gray-500">Services</h4>
-                            <p>Débarras complet, Nettoyage</p>
+                            <p>{selectedServices.join(', ')}</p>
                           </div>
                           <div>
                             <h4 className="text-sm font-medium text-gray-500">Urgence</h4>
-                            <p>Sous 1 semaine</p>
+                            <p>
+                              {formData.urgency === 'normal' ? 'Sous 1 semaine' :
+                               formData.urgency === 'urgent' ? 'Sous 48h' :
+                               formData.urgency === 'flexible' ? 'Date flexible' : ''}
+                            </p>
                           </div>
                         </div>
                       </div>
@@ -342,7 +488,14 @@ export default function Devis() {
                                 className="relative cursor-pointer bg-white rounded-md font-medium text-green-600 hover:text-green-500 focus-within:outline-none"
                               >
                                 <span>Uploader des fichiers</span>
-                                <input id="file-upload" name="file-upload" type="file" className="sr-only" multiple />
+                                <input 
+                                  id="file-upload" 
+                                  name="photos"
+                                  type="file" 
+                                  className="sr-only" 
+                                  multiple 
+                                  onChange={handleChange}
+                                />
                               </label>
                               <p className="pl-1">ou glisser-déposer</p>
                             </div>
@@ -356,13 +509,15 @@ export default function Devis() {
                           id="consent"
                           name="consent"
                           type="checkbox"
-                          className="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded mt-1"
-                          required
+                          checked={formData.consent}
+                          onChange={handleChange}
+                          className={`h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded mt-1 ${errors.consent ? 'border-red-500' : ''}`}
                         />
                         <label htmlFor="consent" className="ml-2 block text-sm text-gray-700">
                           J'accepte que mes données soient utilisées pour traiter ma demande. J'ai pris connaissance de la politique de confidentialité.*
                         </label>
                       </div>
+                      {errors.consent && <p className="mt-1 text-sm text-red-600">{errors.consent}</p>}
                       
                       <div className="flex justify-between pt-4">
                         <button
