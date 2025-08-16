@@ -29,11 +29,12 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white`}
       >
-        <div className="bg-green-800 text-white font-semibold text-md py-4 px-4 text-center">
-  🚚 Service disponible en Île-de-France et ses alentours</div>
         <Header />
+        <div className="bg-gradient-to-r from-green-600 to-green-700 text-white font-semibold text-md py-4 px-4 text-center">
+          🚚 Service disponible en Île-de-France et ses alentours
+        </div>
         {children}
-        <Footer/>
+        <Footer />
       </body>
     </html>
   );

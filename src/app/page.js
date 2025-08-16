@@ -170,11 +170,7 @@ export default function Home() {
         </div>
 
         {/* Fixed scroll indicator at bottom of viewport */}
-        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 animate-bounce z-50">
-          <div className="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center">
-            <div className="w-1 h-2 bg-white/80 rounded-full mt-2 animate-scrollIndicator"></div>
-          </div>
-        </div>
+       
       </section>
 
       {/* Services Section */}
