@@ -10,7 +10,7 @@ export default function Footer() {
               Service professionnel de débarras et nettoyage dans toute la France.
             </p>
             <div className="flex space-x-4">
-              {['facebook', 'twitter', 'instagram'].map((social) => (
+              {['facebook', 'instagram'].map((social) => (
                 <a
                   key={social}
                   href="#"
