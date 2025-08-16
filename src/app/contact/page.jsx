@@ -9,7 +9,7 @@ export const metadata = {
 export default function Contact() {
   return (
     <>
-      <main className="pt-24 pb-16">
+      <main className="pt-24 pb-16 bg-white ">
         {/* Contact Hero */}
         <section className="relative">
           <div className="absolute inset-0 bg-gradient-to-r from-green-700 to-green-800 opacity-90"></div>
@@ -23,7 +23,7 @@ export default function Contact() {
         <section className="container mx-auto px-4 py-16">
           <div className="grid md:grid-cols-2 gap-12">
             {/* Contact Form */}
-            <div className="bg-white rounded-xl shadow-lg p-8">
+            <div className="bg-white rounded-xl shadow-lg p-8 order-2 md:order-1">
               <h2 className="text-2xl font-bold mb-6">Envoyez-nous un message</h2>
               <form className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-6">
@@ -86,7 +86,7 @@ export default function Contact() {
             </div>
 
             {/* Contact Info */}
-            <div>
+            <div className='order-1 md:order-2'>
               <h2 className="text-2xl font-bold mb-6">Nos coordonnées</h2>
               <div className="space-y-6">
                 <div className="flex items-start">
