@@ -192,7 +192,7 @@ export default function Devis() {
                 {/* Step 1: Personal Info */}
                 {currentStep === 1 && (
                   <div className="p-8 md:p-12">
-                    <h2 className="text-2xl font-bold mb-6">Informations personnelles</h2>
+                    <h2 className="text-2xl font-bold mb-6 text-black">Informations personnelles</h2>
                     <div className="space-y-6">
                       <div className="grid md:grid-cols-2 gap-6">
                         <div>
@@ -557,7 +557,7 @@ export default function Devis() {
         {/* Process Steps */}
         <section className="container mx-auto px-4 py-16 bg-white">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-12">Comment ça marche ?</h2>
+            <h2 className="text-3xl font-bold text-center mb-12 text-black">Comment ça marche ?</h2>
             <div className="grid md:grid-cols-3 gap-8">
               {[
                 {
@@ -579,13 +579,13 @@ export default function Devis() {
                 <div key={index} className="text-center">
                   <div className="relative mx-auto mb-6">
                     <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto">
-                      <span className="text-2xl font-bold text-green-700">{item.step}</span>
+                      <span className="text-2xl font-bold text-green-700 ">{item.step}</span>
                     </div>
                     {index < 2 && (
                       <div className="hidden md:block absolute top-1/2 left-full w-16 h-1 bg-green-100 transform -translate-y-1/2"></div>
                     )}
                   </div>
-                  <h3 className="text-xl font-bold mb-2">{item.title}</h3>
+                  <h3 className="text-xl font-bold mb-2 text-black">{item.title}</h3>
                   <p className="text-gray-600">{item.description}</p>
                 </div>
               ))}
