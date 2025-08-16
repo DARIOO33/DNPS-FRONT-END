@@ -55,10 +55,10 @@ export default function Contact() {
                   />
                 </div>
                 <div>
-                  <label htmlFor="subject" className="block text-sm font-medium text-black mb-1">Sujet</label>
+                  <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-1">Sujet</label>
                   <select
                     id="subject"
-                    className="w-full px-2 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-600 focus:border-transparent"
+                    className="w-full px-2 py-3 border border-gray-300 rounded-lg focus:ring-2 text-black focus:ring-green-600 focus:border-transparent"
                   >
                     <option value="">Sélectionnez un sujet</option>
                     <option value="devis">Demande de devis</option>
@@ -72,7 +72,7 @@ export default function Contact() {
                   <textarea
                     id="message"
                     rows="5"
-                    className="w-full px-2 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-600 focus:border-transparent"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-600 focus:border-transparent"
                     required
                   ></textarea>
                 </div>
