@@ -120,7 +120,7 @@ export default function Devis() {
           <div className="absolute inset-0 opacity-10 bg-[url('/pattern.svg')]"></div>
           <div className="container mx-auto px-4 text-center relative z-10">
             <h1 className="text-4xl md:text-5xl font-bold mb-4">Devis Gratuit</h1>
-            <p className="text-xl md:text-2xl max-w-3xl mx-auto mb-6">Recevez une estimation précise sous 24h</p>
+            <p className="text-xl md:text-2xl max-w-3xl mx-auto mb-6">Recevez une estimation précise en moins d’une heure</p>
             <div className="flex justify-center gap-2">
               {[1, 2, 3].map(step => (
                 <div 
@@ -568,7 +568,7 @@ export default function Devis() {
                 {
                   step: "2",
                   title: "Évaluation rapide",
-                  description: "Nos experts analysent votre demande sous 24h"
+                  description: "Nos experts analysent votre demande en moins d’une heure"
                 },
                 {
                   step: "3",
